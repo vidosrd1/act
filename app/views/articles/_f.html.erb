@@ -1,0 +1,4 @@
+<div>
+  <%= form.label :tag %>
+  <%= form.select :tag_id, options_for_select(Tag.all.map { |tag| [tag.name, tag.id]})%>
+</div>

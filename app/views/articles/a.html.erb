@@ -1,0 +1,81 @@
+<div class="1col-lg-4 1col-lg-3-right">
+  <div class="row 1left-sidebar
+1js-pinned-left-sidebar 1ps-relative">
+  </div>
+</div>
+
+<% @articles.each do |art| %>
+  <h5>
+    <strong class="block font-medium mb-1">
+      <a href="/articles/<%= article.id %>",
+      class="nav-link"><%= article.title %></a>
+    </strong>
+  </h5>
+<% end %>
+<% Article.each do |article| %>
+<div class="row mt-4 clearfix">
+  <div class="col-8 col-sm-8
+  col-md-9 col-lg-9">
+  <h5 class="1mt-0 1mb-1">
+    <a href="/articles/<%= article.id %>",
+    class="nav-link"><%= article.title %></a>      </h5>
+  <time class="dateline text-muted" role="" itemprop="datePublished" datetime="28.03.2023 09:13" data-timestamp="1679987580">
+    <small><%= article.publish %></small>
+  </time>
+  <%= truncate(strip_tags(article.body.to_s), length:180) %>
+  </div>
+  <div class="col-4 col-sm-4 col-md-3 col-lg-3 clearfix">
+    <% if article.image.attached? %>
+      <%= link_to image_tag(article.image,
+      style:"width:200px; heigh:auto"), article.image %>
+    <% end %>
+  </div>
+</div>
+<hr />
+<% end %>
+
+ class="question-page unified-theme"
+<%= truncate(strip_tags(article.body.to_s), length:120) %>
+<div class="col-lg-4 left-sidebar--sticky-container
+js-sticky-leftnav">
+<nav role="navigation">
+</nav>
+</div>
+ id="left-sidebar"
+ id="content" c
+ <main class="container mx-auto mt-28 px-5 flex">
+ </main>
+
+<div class="col-lg-4 col-lg-3-right">
+  <%= render 'layouts/articles' %>
+</div>
+
+<%= link_to 'Articles', articles_path,
+class: "nav-link" %>
+<hr />
+
+<%= render @articles %>
+<div id="content" role="main">
+  <div class="l-fluid-fixed">
+    <div class="sc-border-light-right l-main">
+      <div class="l-content">
+      </div>
+    </div>
+    <div class="1col-lg-8 l-sidebar-right">
+      <div class="streamSidebar sc-clearfix
+      sc-browsers-enable-gpu" style="top: -91px;">
+      <%= render 'layouts/articles'%>
+      <%= yield %>
+    </div>
+    </div>
+  </div>
+
+<div class="my-5">
+  <%= form.label :user_id %>
+  <%= form.text_field :user_id, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+</div>
+
+<p class="my-5">
+  <strong class="block font-medium mb-1">User:</strong>
+  <%= article.user_id %>
+</p>

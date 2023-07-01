@@ -1,0 +1,52 @@
+<div class="mx-auto md:w-2/3 w-full flex">
+  <div>
+    <%= link_to "Edit this list", edit_list_path(@list) %> |
+    <%= link_to "Back to lists", lists_path %>
+  </div>
+  <br />
+  <div class="flex justify-between items-center">
+    <%= link_to 'New list', new_list_path,
+    class: "rounded-lg py-3 px-5 bg-blue-600
+    1text-white block font-medium" %>
+  </div>
+  <hr />
+  <div class="mx-auto">
+    <% if notice.present? %>
+      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+    <% end %>
+    <h3><%= @list.title %></h3>
+    <h5>
+      <strong class="block font-medium mb-1">Category:</strong>
+      <%= @list.art.name %>
+    </h5>
+    <time class="dateline text-muted" role="" itemprop="datePublished" datetime="28.03.2023 09:13" data-timestamp="1679987580">
+      <small><%= @list.publish %></small>
+    </time>
+    <div id="navbar" class="1collapse">
+      <ul class="nav navbar-nav">
+        <li style="width:650px; heigh:auto" class="">
+          <p style="width:650px; heigh:auto">
+          <% if @list.image.attached? %>
+            <%= link_to image_tag(@list.image,
+            style:"width:640px; heigh:auto"), @list.image %>
+          <% end %>
+          </p>
+        <li><hr /></li>
+        <li class="">
+          <p style="width:400px; heigh:200px">
+            <%= @list.body %>
+          </p>
+        </li>
+      </ul>
+    </div>
+    <hr />
+    <div>
+      <%= link_to 'Edit this list', edit_list_path(@list), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+      <div class="inline-block ml-2">
+        <%= button_to 'Destroy this list', list_path(@list), method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+      </div>
+      <%= link_to 'Back to lists', lists_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+    </div>
+    <br />
+  </div>
+</div>

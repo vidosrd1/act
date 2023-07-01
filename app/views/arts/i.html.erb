@@ -1,0 +1,7 @@
+<%= render @arts %>
+<% @arts.each do |art| %>
+<h3>
+  <a href="/arts/<%= art.id %>",
+  class="nav-link"><%= art.name %></a>
+</h3>
+<% end %>

@@ -1,0 +1,80 @@
+<div class="w-full flex">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <div class="flex justify-between items-center">
+    <h1 class="font-bold text-4xl">Articles</h1>
+    <%= @articles.count %> / <%= Article.count %>
+  </div>
+  <%= form_with(url: articles_path, method: :get,
+  data: {turbo_frame: "articls", turbo_action: "advance"}) do |form| %>
+    <%= form.label :query, "Search by articl title:",
+      class: "block mb-2" %>
+      <div class="flex space-x-3">
+        <%= form.text_field :query, class: "py-2 px-5 rounded border ring-0
+        focus:ring-4 focus:ring-orange-100 focus:shadow-none
+        focus:border-orange-500 focus:outline-none",
+        data: {action: "input->search-form#search"} %>
+
+        <%= form.submit 'Search', class: "px-4 py-2 font-medium
+  bg-orange-300 text-neutal-900 rounded flex items-center
+  cursor-pointer hover:bg-orange-400 focus:ring-4 ring-0
+  focus:ring-orange-100" %>
+      </div>
+    <% end %>
+  <div class="flex justify-between items-center">
+    <br />
+    <%= link_to 'New article', new_article_path,
+    class: "rounded-lg py-3 px-5 bg-blue-600
+    1text-white block font-medium" %>
+  </div>
+  <hr />
+  <% if @pagy.count > @pagy.items %>
+  <div class="mt-10">
+    <%== pagy_bootstrap_nav(@pagy) %>
+  </div>
+  <hr />
+  <% end %>
+  <div id="articles" class="min-w-full">
+    <% @articles.each do |article| %>
+    <div class="row mt-4 clearfix">
+      <div class="col-8 col-sm-8
+      col-md-9 col-lg-9">
+      <h5 class="1mt-0 1mb-1">
+        <a href="/articles/<%= article.id %>",
+        class="nav-link"><%= article.title %></a>
+      </h5>
+      <%= form_for article do |f| %>
+        <%= f.collection_select :tag_ids,
+          Tag.all, :id, :name %>
+        <%= f.submit %>
+      <% end %>
+      <br/>
+      <time class="dateline text-muted" role="" itemprop="datePublished" datetime="28.03.2023 09:13" data-timestamp="1679987580">
+        <small><%= article.publish %></small>
+      </time>
+      <%= truncate(strip_tags(article.body.to_s), length:180) %>
+      </div>
+      <div class="col-4 col-sm-4 col-md-3 col-lg-3 clearfix">
+        <% if article.image.attached? %>
+          <%= link_to image_tag(article.image,
+          style:"width:200px; heigh:auto"), article.image %>
+        <% end %>
+      </div>
+    </div>
+    <hr />
+    <% end %>
+  </div>
+  <% if @pagy.count > @pagy.items %>
+  <div class="mt-10">
+    <%== pagy_bootstrap_nav(@pagy) %>
+  </div>
+  <% end %>
+  <hr />
+  <div class="flex justify-between items-center">
+    <%= link_to 'New article', new_article_path,
+    class: "rounded-lg py-3 px-5 bg-blue-600
+    1text-white block font-medium" %>
+  </div>
+</div>

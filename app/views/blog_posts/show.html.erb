@@ -1,0 +1,23 @@
+<div class="mx-auto md:w-2/3 w-full flex">
+  <div class="mx-auto">
+    <% if notice.present? %>
+      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+    <% end %>
+
+    <h3><%= @blog_post.title %></h3>
+    <time class="dateline text-muted" role="" itemprop="datePublished" datetime="28.03.2023 09:13" data-timestamp="1679987580">
+      <small><%= @blog_post.publish %></small>
+    </time>
+    <p><%= @blog_post.body %></p>
+    <hr />
+    <%= link_to 'Edit this blog_post',
+    edit_blog_post_path(@blog_post),
+    class: "mt-2 rounded-lg py-3 px-5
+    bg-gray-100 inline-block font-medium" %>
+    <%= link_to 'Back to blog_posts', blog_posts_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+    <div class="inline-block ml-2">
+      <%= button_to 'Destroy this blog_post', blog_post_path(@blog_post), method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+    </div>
+    <br />
+  </div>
+</div>

@@ -1,0 +1,88 @@
+<div class="w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <div class="flex justify-between items-center">
+    <h1 class="font-bold text-4xl">Tags</h1>
+  </div>
+  <br />
+  <%= form_with(url: tags_path, method: :get,
+  data: {turbo_frame: "tags", turbo_action: "advance"}) do |form| %>
+      <%= form.label :query, "Search by art name:",
+      class: "block mb-2" %>
+      <div class="flex space-x-3">
+        <%= form.text_field :query, class: "py-2 px-5 rounded border ring-0
+        focus:ring-4 focus:ring-orange-100 focus:shadow-none
+        focus:border-orange-500 focus:outline-none",
+        data: {action: "input->search-form#search"} %>
+
+        <%= form.submit 'Search', class: "px-4 py-2 font-medium
+  bg-orange-300 text-neutal-900 rounded flex items-center
+  cursor-pointer hover:bg-orange-400 focus:ring-4 ring-0
+  focus:ring-orange-100" %>
+      </div>
+    <% end %>
+    <br />
+  <div class="flex justify-between items-center">
+    <%= link_to 'New tag', new_tag_path,
+    class: "rounded-lg py-3 px-5 bg-blue-600
+    1text-white block font-medium" %>
+  </div>
+  <hr />
+
+  <div id="tags" class="min-w-full">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th style="width:10px; heigh:auto"></th>
+          <th class="margin:10px; padding-left:10px;
+          padding-right:10px;">Novine</th>
+          <th style="width:10px; heigh:auto"></th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @tags.each do |tag| %>
+          <tr>
+            <td>
+              <h5>
+                <strong class="block font-medium mb-1">
+                  <a href="/tags/<%= tag.id %>",
+                  class="nav-link"><%= tag.name %></a>
+                </strong>
+              </h5>
+            </td>
+            <td style="padding-top:10px; padding-right:0px;
+            padding-bottom:20px; padding-left:0">
+            <td class="vertical-menu">
+              <br />
+              <ul class="1vertical-menu">
+            <% tag.articles.each do |article| %>
+              <li class="vertical-menu">
+                <a href="/articles/<%= article.id %>",
+                class="nav-link">
+                <%= truncate(strip_tags(article.title.to_s),
+                length:180) %></a>
+              </li>
+            <% end %>
+              </ul>
+            </td>
+            <td class="" style="width:10px; heigh:auto"></td>
+            <td><%= link_to 'Show', tag %></td>
+            <td style="width:7px; heigh:auto"></td>
+            <td><%= link_to 'Edit', edit_tag_path(tag) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <hr />
+  <div class="flex justify-between items-center">
+    <%= link_to 'New tag', new_tag_path,
+    class: "rounded-lg py-3 px-5 bg-blue-600
+    1text-white block font-medium" %>
+  </div>
+</div>

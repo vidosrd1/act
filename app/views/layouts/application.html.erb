@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="Cascading grid layout library">
+    <meta charset="utf-8">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <meta name="google-site-verification" content="BEqJtoPo_I4c_6vkFIVVSbpf9fVSUwI2wZwkVnTKd8k">
+    <meta name="alexaVerifyID" content="DaUAqrtPvA1Lu2A8fkUtlkjhrkY">
+    <meta name="msvalidate.01" content="EEA0E4EF924434B853F2B4249F0D045A">
+    <meta property="fb:pages" content="121873664514550">
+    <title>My Bootstrap</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  </head>
+
+  <body>
+    <%= render 'layouts/nav'%>
+    <main class="container mx-auto mt-28 px-5 flex
+    gs-bg-containe">
+      <div class="row">
+        <div class="col-lg-8">
+          <%= yield %>
+        </div>
+        <div class="col-lg-4">
+          <div style="margin-left:80px; margin-top:30px">
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

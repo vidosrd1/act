@@ -1,0 +1,70 @@
+<div class="w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5
+    text-green-500 font-medium rounded-lg
+    inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <div class="flex justify-between items-center">
+    <h1 class="font-bold text-4xl">Blogs:
+      <%= @blogs.count %> / <%= Blog.count %>
+    </h1>
+  </div>
+  <%= form_with(url: blogs_path, method: :get,
+  data: {controller: "search-form",
+  turbo_frame: "blogs", turbo_action: "advance"}) do |form| %>
+    <%= form.label :query, "Search by band name:",
+    class: "block mb-2" %>
+    <div class="flex space-x-3">
+      <%= form.text_field :query, class: "py-2 px-5
+      rounded border ring-0 focus:ring-4
+      focus:ring-orange-100 focus:shadow-none
+      focus:border-orange-500 focus:outline-none",
+      data: {action: "input->search-form#search"} %>
+
+      <%= form.submit 'Search', class: "px-4 py-2 font-medium
+  bg-orange-300 text-neutal-900 rounded flex items-center
+  cursor-pointer hover:bg-orange-400 focus:ring-4 ring-0
+  focus:ring-orange-100" %>
+    </div>
+  <% end %>
+  <br />
+  <div class="flex justify-between items-center">
+    <%= link_to 'New blog', new_blog_path,
+    class: "rounded-lg py-3 px-5 bg-blue-600
+    1text-white block font-medium" %>
+  </div>
+  <hr />
+  <% if @pagy.count > @pagy.items %>
+  <div class="mt-10">
+    <%== pagy_bootstrap_nav(@pagy) %>
+  </div>
+  <% end %>
+  <hr />
+  <div id="blogs" class="min-w-full">
+    <% @blogs.each do |blog| %>
+    <div class="row mt-4 clearfix">
+      <div class="col-8 col-sm-8 col-md-9 col-lg-9">
+        <h5 class="mt-0 mb-1">
+          <a href="/blogs/<%= blog.id %>",
+          class="nav-link"><%= blog.title %></a>
+        </h5>
+        <%= truncate(strip_tags(blog.body.to_s), length:180) %>
+      </div>
+    </div>
+    <hr />
+    <% end %>
+  </div>
+  <% if @pagy.count > @pagy.items %>
+  <div class="mt-10">
+    <%== pagy_bootstrap_nav(@pagy) %>
+  </div>
+  <% end %>
+  <hr />
+  <div class="flex justify-between items-center">
+    <%= link_to 'New blog', new_blog_path,
+    class: "rounded-lg py-3 px-5 bg-blue-600
+    1text-white block font-medium" %>
+  </div>
+  <br />
+</div>

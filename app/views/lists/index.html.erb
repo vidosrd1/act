@@ -1,0 +1,77 @@
+<div class="w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <div class="flex justify-between items-center">
+    <h1 class="font-bold text-4xl">Lists</h1>
+  </div>
+  <hr />
+  <%= form_with(url: lists_path, method: :get,
+  data: {controller: "search-form",
+  turbo_frame: "lists", turbo_action: "advance"}) do |form| %>
+    <%= form.label :query, "Search by list name:",
+    class: "block mb-2" %>
+    <div class="flex space-x-3">
+      <%= form.text_field :query, class: "py-2 px-5
+      rounded border ring-0 focus:ring-4
+      focus:ring-orange-100 focus:shadow-none
+      focus:border-orange-500 focus:outline-none",
+      data: {action: "input->search-form#search"} %>
+
+      <%= form.submit 'Search', class: "px-4 py-2 font-medium
+bg-orange-300 text-neutal-900 rounded flex items-center
+cursor-pointer hover:bg-orange-400 focus:ring-4 ring-0
+focus:ring-orange-100" %>
+    </div>
+  <% end %>
+  <br />
+  <div class="flex justify-between items-center">
+    <%= link_to 'New list', new_list_path,
+    class: "rounded-lg py-3 px-5 bg-blue-600
+    1text-white block font-medium" %>
+  </div>
+  <hr />
+  <% if @pagy.count > @pagy.items %>
+  <div class="mt-10">
+    <%== pagy_bootstrap_nav(@pagy) %>
+  </div>
+  <% end %>
+  <hr />
+  <div id="lists">
+    <% @lists.each do |list| %>
+    <div class="row  mt-4 clearfix">
+      <div class="col-8 col-sm-8 col-md-9 col-lg-9">
+        <h5 class="mt-0 mb-1">
+          <a href="/lists/<%= list.id %>",
+          class="nav-link"><%= list.title %></a>
+        </h5>
+        <strong class="block font-medium mb-1">Art:</strong>
+        <%= list.art.name %>
+        <br/>
+        <time class="dateline text-muted" role="" itemprop="datePublished" datetime="28.03.2023 09:13" data-timestamp="1679987580">
+          <small><%= list.publish %></small>
+        </time>
+        <%= truncate(strip_tags(list.body.to_s), length:180) %>
+      </div>
+      <div class="col-4 col-sm-4 col-md-3 col-lg-3 clearfix">
+        <% if list.image.attached? %>
+          <%= link_to image_tag(list.image,
+          style:"width:200px; heigh:auto"), list.image %>
+        <% end %>
+      </div>
+    </div>
+    <% end %>
+  </div>
+  <hr />
+  <% if @pagy.count > @pagy.items %>
+  <div class="mt-10">
+    <%== pagy_bootstrap_nav(@pagy) %>
+  </div>
+  <% end %>
+  <div class="flex justify-between items-center">
+    <%= link_to 'New list', new_list_path,
+    class: "rounded-lg py-3 px-5 bg-blue-600
+    1text-white block font-medium" %>
+  </div>
+</div>

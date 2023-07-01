@@ -1,0 +1,22 @@
+<div class="flex justify-between items-center">
+  <h1 class="font-bold text-4xl">Tags</h1>
+  <%= link_to 'New tag', new_tag_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
+</div>
+<th class="margin:10px; padding-left:10px; padding-right:10px;">Lists</th>
+<th style="width:10px; heigh:auto"></th>
+<td style="padding-top:10px; padding-right:0px;
+padding-bottom:20px; padding-left:0">
+<td class="vertical-menu">
+  <ul class="1vertical-menu">
+    <% if user_signed_in? %>
+<% tag.articles.each do |article| %>
+  <li class="vertical-menu">
+    <a href="/articles/<%= article.id %>",
+    class="nav-link">
+    <%= truncate(strip_tags(article.title.to_s),
+    length:180) %></a>
+  </li>
+<% end %>
+    <% end %>
+  </ul>
+</td>

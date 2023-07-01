@@ -1,0 +1,23 @@
+<%= list.title %>
+<%= link_to list.title, list_path(list),
+class: "text-orange-600 underline hover:text-orange-700" %>
+<p class="my-5">
+  <strong class="block font-medium mb-1">Artist:</strong>
+  <%= link_to list.artist, list_path(list),
+  class: "text-orange-600 underline hover:text-orange-700" %>
+</p>
+
+<p class="my-5">
+  <strong class="block font-medium mb-1">Title:</strong>
+  <%= list.title %>
+</p>
+
+<p class="my-5">
+  <strong class="block font-medium mb-1">Publish:</strong>
+  <%= list.publish %>
+</p>
+
+<p class="my-5">
+  <strong class="block font-medium mb-1">Body:</strong>
+  <%= list.body %>
+</p>

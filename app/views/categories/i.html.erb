@@ -1,0 +1,25 @@
+<%= render @categories %>
+<div class="row mt-4 clearfix">
+  <h4><%= category.name %></h4>
+</div>
+<hr />
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Blogs</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @categories.each do |category| %>
+    <tr>
+      <td><%= category.name %></td>
+      <% category.blogs.each do |blog| %>
+        <td><%= blog.title %></td>
+      <% end %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,28 @@
+<div class="mx-auto md:w-2/3 w-full flex">
+  <div class="mx-auto">
+    <% if notice.present? %>
+      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+    <% end %>
+    <%= link_to 'New blog', new_blog_path,
+    class: "rounded-lg py-3 px-5 bg-blue-600
+    1text-white block font-medium" %>
+    <hr />
+    <h3><%= @blog.title %></h3>
+    <h5>
+      <strong class="block font-medium mb-1">Category:</strong>
+      <%= @blog.category.name %>
+    </h5>
+    <time class="dateline text-muted" role="" itemprop="datePublished" datetime="28.03.2023 09:13" data-timestamp="1679987580">
+      <small><%= @blog.publish %></small>
+    </time>
+    <hr />
+    <p><%= @blog.body %></p>
+    <hr />
+
+    <%= link_to 'Edit this blog', edit_blog_path(@blog), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+    <div class="inline-block ml-2">
+      <%= button_to 'Destroy this blog', blog_path(@blog), method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+    </div>
+    <%= link_to 'Back to blogs', blogs_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+  </div>
+</div>

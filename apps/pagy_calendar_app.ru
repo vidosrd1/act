@@ -1,0 +1,109 @@
+require 'bundler/inline'
+gemfile true do
+  source 'https://rubygems.org'
+  gem 'rack'
+  # gem 'pagy'            # <--install from rubygems
+  gem 'pagy', path: '../' # <-- use the local repo
+  gem 'puma'
+  gem 'sinatra'
+  gem 'sinatra-contrib'
+  gem 'activesupport'
+end
+
+# Edit this section adding/removing the extras and DEFAULT as needed
+# pagy initializer
+require 'pagy/extras/calendar'
+require 'pagy/extras/bootstrap'
+
+Pagy::DEFAULT.freeze
+
+require_relative '../test/mock_helpers/collection'
+
+require 'sinatra/base'
+class PagyCalendarApp < Sinatra::Base
+  configure do
+    enable :inline_templates
+  end
+  include Pagy::Backend
+  # Edit this section adding your own helpers as needed
+  helpers do
+    include Pagy::Frontend
+  end
+  def pagy_calendar_period(collection)
+    collection.minmax.map(&:in_time_zone)
+  end
+  def pagy_calendar_filter(collection, from, to)
+    collection.select_page_of_records(from.utc, to.utc)  # storage in UTC
+  end
+  get '/' do
+    Time.zone  = 'EST'   # convert the UTC storage time to time with zone 'EST'
+    collection = MockCollection::Calendar.new
+    # The conf Hash defines the pagy objects variables keyed by calendar unit and the final pagy standard object
+    # The :skip is an optional and arbitrarily named param that skips the calendar pagination and uses only the pagy
+    # object to paginate the unfiltered collection. (It's active by default even without a :skip param).
+    # You way want to invert the logic (also in the view) with something like `active: params[:active]`,
+    # which would be inactive by default and only active on demand.
+    @calendar, @pagy, @records = pagy_calendar(collection, year:   { size: [1, 1, 1, 1] },
+                                                           month:  { size: [0, 12, 12, 0], format: '%b' },
+                                                           pagy:   { items: 10 },
+                                                           active: !params[:skip])
+    erb :pagy_demo # template available in the __END__ section as @@ pagy_demo
+  end
+end
+
+run PagyCalendarApp
+
+__END__
+
+@@ layout
+<html style="font-size: 0.7rem">
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body style="background-color: #f7f7f7; color: #51585F;">
+  <%= yield %>
+</body>
+</html>
+
+@@ pagy_demo
+<div class="container">
+
+  <h3>Pagy Calendar Application</h3>
+  <p>Self-contained, standalone Sinatra app implementing nested calendar pagination for year and month units.</p>
+  <p>See the <a href="https://ddnexus.github.io/pagy/docs/extras/calendar">Pagy Calendar Extra</a> for details.</p>
+  <hr>
+
+  <!-- calendar UI manual toggle -->
+  <p>
+  <% if params[:skip] %>
+    <a href="/" >Show Calendar</a>
+  <% else %>
+    <a href="?skip=true" >Hide Calendar</a>
+    <br>
+    <a href="<%= pagy_calendar_url_at(@calendar, Time.zone.now) %>">Go to current Page</a>
+    <% end %>
+  </p>
+
+  <!-- calendar filtering navs -->
+  <% if @calendar %>
+    <%= pagy_bootstrap_nav(@calendar[:year]) %>   <!-- year nav -->
+    <%= pagy_bootstrap_nav(@calendar[:month]) %>  <!-- month nav -->
+  <% end %>
+
+  <!-- page info extended for the calendar unit -->
+  <div class="alert alert-primary" role="alert">
+    <%= pagy_info(@pagy) %><%= " for <b>#{@calendar[:month].label(format: '%B %Y')}</b>" if @calendar %>
+  </div>
+
+  <!-- page records (time converted in your local time)-->
+  <div class="list-group">
+    <% @records.each do |record| %>
+    <p class="list-group-item"><%= record.in_time_zone.to_s %></p>
+    <% end %>
+  </div>
+
+  <!-- standard pagination of the selected month -->
+  <p><%= pagy_bootstrap_nav(@pagy) if @pagy.pages > 1 %><p/>
+
+</div>
